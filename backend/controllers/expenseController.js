@@ -1,25 +1,25 @@
 const xlsx = require("xlsx")
-const Income = require("../models/Income")
+const Expense = require("../models/Expense")
 
-exports.addIncome = async (req, res) => {
+exports.addExpense = async (req, res) => {
     const userId = req.user.id;
 
     try{
-        const { icon, source, amount, date } = req.body
-        if(!source || !amount || !date) {
+        const { icon, category, amount, date } = req.body
+        if(!category || !amount || !date) {
             return res.status(400).json({ message: "All fields are required"})
         }
 
-        const newIncome = new Income({
+        const newExpense = new Expense({
             userId,
             icon,
-            source,
+            category,
             amount,
             date: new Date(date),
         })
 
-        await newIncome.save()
-        res.status(200).json(newIncome)
+        await newExpense.save()
+        res.status(200).json(newExpense)
     } catch(err) {
         res
             .status(500)
@@ -27,12 +27,12 @@ exports.addIncome = async (req, res) => {
     }
 }
 
-exports.getAllIncome = async (req, res) => {
+exports.getAllExpense = async (req, res) => {
     const userId = req.user.id
 
     try {
-        const income = await Income.find({ userId }).sort({ date: -1 })
-        res.json(income)
+        const expense = await Expense.find({ userId }).sort({ date: -1 })
+        res.json(expense)
     } catch (err) {
         res
             .status(500)
@@ -40,12 +40,12 @@ exports.getAllIncome = async (req, res) => {
     }
 }
 
-exports.deleteIncome = async (req, res) => {
+exports.deleteExpense = async (req, res) => {
     const userId = req.user.id
 
     try {
-        await Income.findByIdAndDelete(req.params.id)
-        res.json({ message: "Income deleted successfully" })
+        await Expense.findByIdAndDelete(req.params.id)
+        res.json({ message: "Expense deleted successfully" })
     } catch (err) {
         res
             .status(500)
@@ -53,22 +53,22 @@ exports.deleteIncome = async (req, res) => {
     }
 }
 
-exports.downloadIncomeExcel = async (req, res) => {
+exports.downloadExpenseExcel = async (req, res) => {
     const userId = req.user.id
 
     try {
-        const income = await Income.find({ userId }).sort({ date: -1 })
+        const expense = await Expense.find({ userId }).sort({ date: -1 })
 
-        const data = income.map((item) => ({
-            Source: item.source,
+        const data = expense.map((item) => ({
+            Category: item.category,
             Amount: item.amount,
             Date: item.date,
         }))
 
-        const filePath = __dirname + '/../Excels/income_details.xlsx'
+        const filePath = __dirname + '/../Excels/expense_details.xlsx'
         const wb = xlsx.utils.book_new()
         const ws = xlsx.utils.json_to_sheet(data)
-        xlsx.utils.book_append_sheet(wb, ws, "Income")
+        xlsx.utils.book_append_sheet(wb, ws, "Expense")
         xlsx.writeFile(wb, filePath)
         res.download(filePath)
     } catch(err) {
