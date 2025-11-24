@@ -24,3 +24,12 @@ export const addThounsandSeparators = (num) => {
 
     return fractionalPart ? `${formattedInteger}.${fractionalPart}` : formattedInteger
 }
+
+export const prepareExpensBarChartData = (data = []) => {
+    const chartData = data.map((item) => ({
+        category: item ?.category,
+        amount: item ?.amount,
+    }))
+
+    return chartData
+}
