@@ -19,17 +19,28 @@ export const getInitials = (name) => {
 }
 
 export const addThounsandSeparators = (num) => {
-    if(num == null || isNaN(num)) return ""
+    if (num == null || isNaN(num)) return "";
 
-    const [integerPart, fractionalPart] = num.toString().split(".")
-    const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    const [integerPart, fractionalPart] = num.toString().split(".");
 
-    return fractionalPart ? `${formattedInteger}.${fractionalPart}` : formattedInteger
+    let lastThree = integerPart.slice(-3);
+    let otherNumbers = integerPart.slice(0, -3);
+
+    if (otherNumbers !== "") {
+        otherNumbers = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",");
+        return fractionalPart
+            ? `${otherNumbers},${lastThree}.${fractionalPart}`
+            : `${otherNumbers},${lastThree}`;
+    }
+
+    return fractionalPart ? `${lastThree}.${fractionalPart}` : lastThree;
 }
 
-export const prepareExpensBarChartData = (data = []) => {
-    const chartData = data.map((item) => ({
+export const prepareExpenseBarChartData = (data = []) => {
+    const storedData = [...data].sort((a, b) => new Date(a.date) - new Date(b.date))
+    const chartData = storedData.map((item) => ({
         category: item ?.category,
+        month: moment(item ?.date).format("Do MMM"),
         amount: item ?.amount,
     }))
 
@@ -39,7 +50,7 @@ export const prepareExpensBarChartData = (data = []) => {
 export const prepareIncomeBarChartData = (data = []) => {
     const storedData = [...data].sort((a, b) => new Date(a.date) - new Date(b.date))
     const chartData = storedData.map((item) => ({
-        category: moment(item ?.date).format("Do MMM"),
+        category: item ?.source,
         month: moment(item ?.date).format("Do MMM"),
         amount: item ?.amount,
         source: item ?.source,

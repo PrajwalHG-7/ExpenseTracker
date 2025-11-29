@@ -1,4 +1,6 @@
 import React from 'react'
+import { addThounsandSeparators } from '../../utils/helper'
+
 import {
     PieChart,
     Pie,
@@ -11,6 +13,8 @@ import CustomTooltip from './CustomTooltip'
 import CustomLegend from './CustomLegend'
 
 const CustomPieChart = ({ data, label, totalAmount, colors, showTextAnchor }) => {
+    const displayTotalAmount = addThounsandSeparators(Number(totalAmount).toFixed(3))
+    
     return (
         <ResponsiveContainer width="100%" height={380}>
             <PieChart>
@@ -52,7 +56,7 @@ const CustomPieChart = ({ data, label, totalAmount, colors, showTextAnchor }) =>
                             fontSize="24px"
                             fontWeight="semi-bold"
                         >
-                            {totalAmount}
+                            ₹ {displayTotalAmount}
                         </text>
                     </>
                 )}

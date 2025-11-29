@@ -53,21 +53,21 @@ const Home = () => {
                     <InfoCard
                         icon={<IoMdCard />}
                         label="Total Balance"
-                        value={addThounsandSeparators(dashboardData ?.totalBalance || 0)}
+                        value={addThounsandSeparators(dashboardData ?.totalBalance.toFixed(3) || 0)}
                         color="bg-primary"
                     />
                     
                     <InfoCard
                         icon={<LuWalletMinimal />}
                         label="Total Income"
-                        value={addThounsandSeparators(dashboardData ?.totalIncome || 0)}
+                        value={addThounsandSeparators(dashboardData ?.totalIncome.toFixed(3) || 0)}
                         color="bg-orange-500"
                     />
 
                     <InfoCard
                         icon={<LuHandCoins />}
                         label="Total Expense"
-                        value={addThounsandSeparators(dashboardData ?.totalExpenses || 0)}
+                        value={addThounsandSeparators(dashboardData ?.totalExpenses.toFixed(3) || 0)}
                         color="bg-red-500"
                     />
                 </div>
