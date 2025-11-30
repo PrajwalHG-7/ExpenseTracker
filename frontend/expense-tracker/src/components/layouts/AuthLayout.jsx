@@ -4,8 +4,16 @@ import chart from "../../assets/images/chart.png"
 
 const AuthLayout = ({ children }) => {
     return  <div className='flex'>
-                <div className='w-screen h-screen md:w-[60vw] px-12 pt-8 pb-12'>
-                    <h2 className='text-lg font-medium text-black'>Expense Tracker</h2>
+                <div className='w-screen h-screen md:w-[60vw] px-12 pt-8 pb-80'>
+                    <div className="flex items-center gap-5">
+                        <div className='h-55 w-55'>
+                            <img src="/expenseTrackerLogo.png" alt="logo" />
+                        </div>
+                        <div className="flex flex-col justify-center text-7xl font-bold text-primary1">
+                            <h2 className=''>Expense</h2>
+                            <h2 className='pl-35'>Tracker</h2>
+                        </div>
+                    </div>
                     {children}
                 </div>
 

@@ -58,3 +58,29 @@ export const prepareIncomeBarChartData = (data = []) => {
 
     return chartData
 }
+
+export const prepareExpenseLineChartData = (data = []) => {
+    const grouped = {}
+
+    data.forEach(item => {
+        const key = moment(item.date).format("YYYY-MM-DD")   // consistent date key
+
+        if (!grouped[key]) {
+            grouped[key] = {
+                date: key,
+                amount: Number(item.amount) || 0
+            }
+        } else {
+            grouped[key].amount += Number(item.amount) || 0
+        }
+    })
+
+    const chartData = Object.values(grouped)
+        .sort((a, b) => new Date(a.date) - new Date(b.date))
+        .map(item => ({
+            month: moment(item.date).format("Do MMM"),
+            amount: item.amount
+        }))
+
+    return chartData
+}
